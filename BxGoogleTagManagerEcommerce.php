@@ -113,6 +113,7 @@ class BxGoogleTagManagerEcommerce {
     public function createDataLayer($dataLayerVarName = "dataLayer") {
         $this->_application->AddBufferContent(function () use ($dataLayerVarName) {
             ob_start();
+            ?><script>(function (window) {if (!window["<?= $dataLayerVarName?>"]) {window["<?= $dataLayerVarName?>"] = [];}})(window);</script><?
             foreach ($this->_methods as $key => $method) {
 
                 $parameters = $this->_methods_parameters[$key];
