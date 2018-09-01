@@ -21,7 +21,7 @@ class BxGoogleTagManagerEcommerce {
      * @var array
      */
     protected $_allowMethods = array(
-        "impressions", "detail", "add2cart", "remove_from_cart", "checkout", "purchase"
+        "impressions", "detail", "add2cart", "remove_from_cart", "checkout", "purchase", "click_by_product"
     );
 
     /**
@@ -43,7 +43,7 @@ class BxGoogleTagManagerEcommerce {
      * @var string
      */
     public $currency = "RUB";
-    
+
     /**
      * @global \CMain $APPLICATION
      */
@@ -113,7 +113,11 @@ class BxGoogleTagManagerEcommerce {
     public function createDataLayer($dataLayerVarName = "dataLayer") {
         $this->_application->AddBufferContent(function () use ($dataLayerVarName) {
             ob_start();
-            ?><script>(function (window) {if (!window["<?= $dataLayerVarName?>"]) {window["<?= $dataLayerVarName?>"] = [];}})(window);</script><?
+            ?><script>(function (window) {
+                                if (!window["<?= $dataLayerVarName ?>"]) {
+                                    window["<?= $dataLayerVarName ?>"] = [];
+                                }
+                            })(window);</script><?
             foreach ($this->_methods as $key => $method) {
 
                 $parameters = $this->_methods_parameters[$key];
@@ -184,6 +188,40 @@ class BxGoogleTagManagerEcommerce {
                         </script>
                         <?
                         break;
+
+                    case "click_by_product":
+                        ?>
+                        <script>
+                            (function (window) {
+                                var d = window.document;
+                                d.addEventListener("DOMContentLoaded", function () {
+                                    d.querySelectorAll("[data-gtm-ecommerce-click-by-product]").forEach(function (el) {
+                                        el.addEventListener("click", function () {
+
+                                            var products = window.JSON.parse(this.dataset.gtmEcommerceClickByProduct);
+
+                                            if (Array.isArray(products)) {
+                                                window["<?= $dataLayerVarName ?>"].push({
+                                                    event: "productClick",
+                                                    ecommerce: {
+                                                        currencyCode: "<?= $this->currency ?>",
+                                                        click: {
+                                                            actionField: {list: products[0].list},
+                                                            products: products
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    });
+                                });
+
+                            })(window);
+
+                        </script>
+                        <?
+                        break;
+
                     case "remove_from_cart":
                         ?>
                         <script>
@@ -210,27 +248,24 @@ class BxGoogleTagManagerEcommerce {
                         </script>
                         <?
                         break;
-                    
+
                     case "checkout":
-                        
                         ?>
                         <script>
                             (function (window) {
                                 window["<?= $dataLayerVarName ?>"].push({
                                     event: "checkout",
                                     ecommerce: {
-                                        actionField: {step: "<?= $parameters["step"]?>", option: "<?= $parameters["option"]?>"},
+                                        actionField: {step: "<?= $parameters["step"] ?>", option: "<?= $parameters["option"] ?>"},
                                         products: <?= \Bitrix\Main\Web\Json::encode(array($parameters["products"])) ?>
                                     }
                                 });
                             })(window);
                         </script>
                         <?
-                        
                         break;
-                    
+
                     case "purchase":
-                        
                         ?>
                         <script>
                             (function (window) {
@@ -244,7 +279,6 @@ class BxGoogleTagManagerEcommerce {
                             })(window);
                         </script>
                         <?
-                        
                         break;
                 }
             }
