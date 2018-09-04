@@ -257,7 +257,7 @@ class BxGoogleTagManagerEcommerce {
                                     event: "checkout",
                                     ecommerce: {
                                         actionField: {step: "<?= $parameters["step"] ?>", option: "<?= $parameters["option"] ?>"},
-                                        products: <?= \Bitrix\Main\Web\Json::encode(array($parameters["products"])) ?>
+                                        products: <?= \Bitrix\Main\Web\Json::encode($parameters["products"]) ?>
                                     }
                                 });
                             })(window);
@@ -273,7 +273,7 @@ class BxGoogleTagManagerEcommerce {
                                     event: "purchase",
                                     ecommerce: {
                                         actionField: <?= \Bitrix\Main\Web\Json::encode(array($parameters["action"])) ?>,
-                                        products: <?= \Bitrix\Main\Web\Json::encode(array($parameters["products"])) ?>
+                                        products: <?= \Bitrix\Main\Web\Json::encode($parameters["products"]) ?>
                                     }
                                 });
                             })(window);
