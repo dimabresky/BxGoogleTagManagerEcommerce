@@ -256,8 +256,10 @@ class BxGoogleTagManagerEcommerce {
                                 window["<?= $dataLayerVarName ?>"].push({
                                     event: "checkout",
                                     ecommerce: {
-                                        actionField: {step: "<?= $parameters["step"] ?>", option: "<?= $parameters["option"] ?>"},
-                                        products: <?= \Bitrix\Main\Web\Json::encode($parameters["products"]) ?>
+                                        checkout: {
+                                            actionField: {step: "<?= $parameters["step"] ?>", option: "<?= $parameters["option"] ?>"},
+                                            products: <?= \Bitrix\Main\Web\Json::encode($parameters["products"]) ?>
+                                        }
                                     }
                                 });
                             })(window);
@@ -272,8 +274,10 @@ class BxGoogleTagManagerEcommerce {
                                 window["<?= $dataLayerVarName ?>"].push({
                                     event: "purchase",
                                     ecommerce: {
-                                        actionField: <?= \Bitrix\Main\Web\Json::encode(array($parameters["action"])) ?>,
-                                        products: <?= \Bitrix\Main\Web\Json::encode($parameters["products"]) ?>
+                                        purchase: {
+                                            actionField: <?= \Bitrix\Main\Web\Json::encode(array($parameters["action"])) ?>,
+                                            products: <?= \Bitrix\Main\Web\Json::encode($parameters["products"]) ?>
+                                        }
                                     }
                                 });
                             })(window);
