@@ -147,7 +147,7 @@ class BxGoogleTagManagerEcommerce {
                                     ecommerce: {
                                         detail: {
                                             actionField: {list: "product"},
-                                            products: <?= \Bitrix\Main\Web\Json::encode(array($parameters)) ?>
+                                            products: <?= \Bitrix\Main\Web\Json::encode($parameters) ?>
                                         }
                                     }
                                 });
