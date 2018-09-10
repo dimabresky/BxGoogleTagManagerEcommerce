@@ -275,7 +275,7 @@ class BxGoogleTagManagerEcommerce {
                                     event: "purchase",
                                     ecommerce: {
                                         purchase: {
-                                            actionField: <?= \Bitrix\Main\Web\Json::encode(array($parameters["action"])) ?>,
+                                            actionField: <?= \Bitrix\Main\Web\Json::encode($parameters["action"]) ?>,
                                             products: <?= \Bitrix\Main\Web\Json::encode($parameters["products"]) ?>
                                         }
                                     }
